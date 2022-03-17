@@ -61,8 +61,24 @@ export default class CustomRadioButton extends Component {
           style={styles.input}
           multiline={true}
           numberOfLines={4}
+          
           />
+          <View style={{flexDirection:'row'}}>
+          <View style={{marginTop:20,margin:10,height:40,width:100,fontSize:5}}>
+            <Button
+              title="run"
+              fontSize="5"
+              onPress={() => Alert.alert(this.state.value)}
+            />
+            
+            </View>
+            <Text style={{marginTop:25,marginLeft:100,fontSize:15}}> Time Elapsed</Text>
+
+            </View>
           </View>
+          
+          
+
           </View>
         );
 
