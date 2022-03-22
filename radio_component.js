@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import CustomRadioButton from './customRadioButton';
 
-
 const val = [
 	{
 		key: 'mysql',
