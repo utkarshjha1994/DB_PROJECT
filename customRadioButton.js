@@ -1,15 +1,43 @@
 import React, { Component } from "react";
-import { TouchableOpacity, View, StyleSheet, Text, Alert } from "react-native";
+import { TouchableOpacity, View, StyleSheet, Text, Alert,SafeAreaView,ScrollView } from "react-native";
 import { Button, TextInput, AppState } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
+
 import {getDbInstance} from './handler';
 
 export default class CustomRadioButton extends Component {
   dbInstance = null;
-  state = {
+ state = {
     radioButton: null,
-  };
-  executeQuery() {
+    
+    HeadTable: ['Head1', 'Head2', 'Head3', 'Head4', 'Head5'],
+    DataTable: [
+      ['1', '2', '3', '4', '5'],
+      ['a', 'b', 'c', 'd', 'e'],
+      ['1', '2', '3', '4', '5'],
+      ['a', 'b', 'c', 'd', 'e'],
+      ['1', '2', '3', '4', '5']
+    ],
+
+    tableHead: ['Head', 'Head2', 'Head3', 'Head4', 'Head5', 'Head6', 'Head7', 'Head8', 'Head9'],
+      widthArr: [80, 80, 80, 80, 80, 80, 80, 80, 80]
+  }; 
+
+ /* constructor(props) {
+    super(props);
+    this.state = {
+      HeadTable: ['Head1', 'Head2', 'Head3', 'Head4', 'Head5'],
+      DataTable: [
+        ['1', '2', '3', '4', '5'],
+        ['a', 'b', 'c', 'd', 'e'],
+        ['1', '2', '3', '4', '5'],
+        ['a', 'b', 'c', 'd', 'e'],
+        ['1', '2', '3', '4', '5']
+      ]
+    }
+  } */
+ /* executeQuery() {
     const handlerType = this.state.radioButton;
     this.dbInstance = getDbInstance(handlerType)
     this.dbInstance.executeQuery(this.state.query)
@@ -21,7 +49,6 @@ export default class CustomRadioButton extends Component {
   componentWillUnmount() {
     AppState.remove('change', this.handleAppStateChange);
   }
-
   handleAppStateChange = (nextAppState) => {
     if (nextAppState === 'inactive') {
       console.log('the app is closed');
@@ -29,10 +56,18 @@ export default class CustomRadioButton extends Component {
         this.dbInstance.closeConnection();
       }
     }   
-  }
+  }*/
 
   render() {
     const { PROP } = this.props;
+    const data = [];
+    for (let i = 0; i < 30; i += 1) {
+      const dataRow = [];
+      for (let j = 0; j < 9; j += 1) {
+        dataRow.push(`${i}${j}`);
+      }
+      data.push(dataRow);
+    }
     return (
       <View style={styles.container}>
         <View style={styles.subContainer}>
@@ -107,7 +142,7 @@ export default class CustomRadioButton extends Component {
                 title="run"
                 fontSize="5"
                 onPress={() => {
-                  alert(this.state.query + "  " + this.state.radioButton);                         
+                  alert(this.state.DataTable + "  " + this.state.radioButton);                         
                   this.executeQuery(this.setState);
                 }
               }
@@ -118,6 +153,30 @@ export default class CustomRadioButton extends Component {
               Time Elapsed
             </Text>
           </View>
+          
+          <ScrollView horizontal={true}>
+          <View>
+            <Table borderStyle={{borderColor: '#C1C0B9'}}>
+              <Row data={this.state.tableHead} widthArr={this.state.widthArr} style={styles.head} textStyle={styles.text}/>
+            </Table>
+            <ScrollView style={styles.dataWrapper}>
+              <Table borderStyle={{borderColor: '#C1C0B9'}}>
+                {
+                  data.map((dataRow, index) => (
+                    <Row
+                      key={index}
+                      data={dataRow}
+                      widthArr={this.state.widthArr}
+                      style={[styles.row, index%2 && {backgroundColor: '#ffffff'}]}
+                      textStyle={styles.text}
+                    />
+                  ))
+                }
+              </Table>
+            </ScrollView>
+          </View>
+        </ScrollView>
+
         </View>
       </View>
     );
@@ -136,6 +195,12 @@ const styles = StyleSheet.create({
     height: 800,
     width: 400,
     borderColor: "black",
+  },
+
+  scrollView: {
+    backgroundColor: 'grey',
+    marginLeft: 0,
+    marginTop:1
   },
 
   input: {
@@ -177,6 +242,13 @@ const styles = StyleSheet.create({
     height: 16,
     borderRadius: 55,
     backgroundColor: "red",
+  },
+  dataWrapper: { 
+    marginTop: -1 
+  },
+  head: { 
+    height: 50, 
+    backgroundColor: '#6F7BD9' 
   },
   result: {
     marginTop: 22,
