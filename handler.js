@@ -1,61 +1,61 @@
-
-export const getDbInstance = (radioButton) => {
-    if (radioButton == "mySql") {
-        return MySqlHandler;
+export const getDbInstance = (dbType) => {
+    if (dbType === "mysql") {
+        return new MySqlHandler(dbType);
+    } else if (dbType === "redshift") {
+        return new RedShiftHandler(dbType);
     } else {
-        return RedShiftHandler;
+        return null;
     }
 }
 
 class MySqlHandler {
-    connection = null;
-
-    constructor(database) {
-        try {
-            if (this.connection == null) {
-                connection  = mysql.createPool({
-                    host: 'aws-url',
-                    user: 'admin',
-                    password: 'dbproject123',
-                    database: database
-                });
-            }
-        } catch (err) {
+    name = ""
+    constructor(name) {
+        this.name = name;
+    }
+    async executeQuery(query) {
+        try{
+            const response = await fetch('https://polar-forest-84901.herokuapp.com/mysql', {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                headers: {
+                  'Content-Type': 'application/json'
+                  // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: JSON.stringify({
+                    "query": query
+                }),
+            });
+            return await response.json();
+        }catch(err) {
             console.log(err);
         }
     }
-    connect() {
-       console.log("Already connected");
-    }
-
-    executeQuery(query) {
-        this.connection.getConnection((err, conn) => {
-            conn.query(query, (err, result, fields) => {
-                if(err) {
-                    console.log(err);
-                    return null;
-                }
-                console.log(fields);
-                console.log(results);
-            });
-        });
-    }
-
-    closeConnection() {
-        this.connection.closeConnection();
+    getName() {
+        return this.name;
     }
 }
 
-class RedShiftHandler {
- constructor() {
-        // do something
+class Redshift {
+    name = ""
+    constructor(name) {
+        this.name = name;
     }
-    
-    connect() {
-        //make connection
+    async executeQuery(query) {
+        try{
+            const response = await fetch('https://polar-forest-84901.herokuapp.com/redshift', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                query: query
+                            })
+                        });
+            return await response.json();
+        }catch(err) {
+            console.log(err);
+        }
     }
-
-    executeQuery(query) {
-        
+    getName() {
+        return this.name;
     }
 }

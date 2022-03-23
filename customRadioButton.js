@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { TouchableOpacity, View, StyleSheet, Text, Alert,SafeAreaView,ScrollView } from "react-native";
-import { Button, TextInput, AppState } from "react-native";
+import { TouchableOpacity, View, StyleSheet, Text, ScrollView } from "react-native";
+import { Button, TextInput } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
@@ -37,26 +37,21 @@ export default class CustomRadioButton extends Component {
       ]
     }
   } */
- /* executeQuery() {
+  executeQuery() {
     const handlerType = this.state.radioButton;
-    this.dbInstance = getDbInstance(handlerType)
-    this.dbInstance.executeQuery(this.state.query)
-  }
-  componentDidMount() {
-    AppState.addEventListener('change', this.handleAppStateChange);
-  }
-  
-  componentWillUnmount() {
-    AppState.remove('change', this.handleAppStateChange);
-  }
-  handleAppStateChange = (nextAppState) => {
-    if (nextAppState === 'inactive') {
-      console.log('the app is closed');
-      if (this.dbInstance) {
-        this.dbInstance.closeConnection();
-      }
-    }   
-  }*/
+    if (this.dbInstance && this.dbInstance.getName() != handlerType) {
+      this.dbInstance.closeConnection();
+      this.dbInstance = getDbInstance(handlerType)
+    }
+    if (!this.dbInstance) {
+      console.log("creating instance");
+      this.dbInstance = getDbInstance(handlerType);
+    }
+    console.log(this.dbInstance);
+    console.log(this.state.radioButton);
+    const result = this.dbInstance.executeQuery(this.state.query)
+    result.then(console.log);
+  }   
 
   render() {
     const { PROP } = this.props;
