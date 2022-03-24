@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { TouchableOpacity, View, StyleSheet, Text, Alert,SafeAreaView,ScrollView } from "react-native";
-import { Button, TextInput, AppState } from "react-native";
+import { TouchableOpacity, View, StyleSheet, Text, ScrollView } from "react-native";
+import { Button, TextInput } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
@@ -8,6 +8,8 @@ import {getDbInstance} from './handler';
 
 export default class CustomRadioButton extends Component {
   dbInstance = null;
+ 
+ // tableHead = ['Head', 'Head2', 'Head3', 'Head4', 'Head5', 'Head6', 'Head7', 'Head8', 'Head9']
  state = {
     radioButton: null,
     
@@ -21,54 +23,86 @@ export default class CustomRadioButton extends Component {
     ],
 
     tableHead: ['Head', 'Head2', 'Head3', 'Head4', 'Head5', 'Head6', 'Head7', 'Head8', 'Head9'],
-      widthArr: [80, 80, 80, 80, 80, 80, 80, 80, 80]
+      widthArr: [180, 180, 180, 180, 180, 180, 180, 180, 180],
+      data: []
   }; 
 
- /* constructor(props) {
-    super(props);
-    this.state = {
-      HeadTable: ['Head1', 'Head2', 'Head3', 'Head4', 'Head5'],
-      DataTable: [
-        ['1', '2', '3', '4', '5'],
-        ['a', 'b', 'c', 'd', 'e'],
-        ['1', '2', '3', '4', '5'],
-        ['a', 'b', 'c', 'd', 'e'],
-        ['1', '2', '3', '4', '5']
-      ]
-    }
-  } */
- /* executeQuery() {
+ 
+  executeQuery() {
     const handlerType = this.state.radioButton;
-    this.dbInstance = getDbInstance(handlerType)
-    this.dbInstance.executeQuery(this.state.query)
-  }
-  componentDidMount() {
-    AppState.addEventListener('change', this.handleAppStateChange);
-  }
-  
-  componentWillUnmount() {
-    AppState.remove('change', this.handleAppStateChange);
-  }
+    if (this.dbInstance && this.dbInstance.getName() != handlerType) {
+   
+      this.dbInstance = getDbInstance(handlerType)
+    }
+    if (!this.dbInstance) {
+      console.log("creating instance");
+      this.dbInstance = getDbInstance(handlerType);
+    }
+    console.log(this.dbInstance);
+    console.log(this.state.radioButton);
+    const result = this.dbInstance.executeQuery(this.state.query)
+    result.then(this.populateDb);
+  }   
 
-  handleAppStateChange = (nextAppState) => {
-    if (nextAppState === 'inactive') {
-      console.log('the app is closed');
-      if (this.dbInstance) {
-        this.dbInstance.closeConnection();
-      }
-    }   
-  }*/
+  populateDb(result){
+    //console.log(result)
+   /* try{
+      var user = JSON.parse(result)
+    }
+    
+    catch(error){
+      alert(error)
+    }*/
+      
+     // alert(result)
+     
+   //  console.log(result)
+    var product = []
+                  
+                  
+    // const visit = (obj, product) => {
+      
+       const value = Object.values(result)
+       console.log("values are")
+       //console.log(value)
+
+       var val = value[0]
+      // console.log(val)
+       var ct = []
+       var v = []
+       console.log("b")
+       var header 
+       for(var ob of val){
+         var row = Object.values(ob)
+          header = Object.keys(ob)
+       /*  console.log("new values are")
+         alert(row)
+        // console.log(row)
+         var tb = []
+         for(var c of row){
+           var cell = Object.values(c)
+           product.push(cell)
+           tb.push(cell)
+         } */
+         
+         ct.push(row)
+       }
+       v.push(header)
+       //alert(v)
+     //  alert(product)
+       this.state.tableHead = v
+       data = ct
+     //  console.log(v)
+
+       alert(ct);
+                    
+      //  this.setState({}) 
+  }
 
   render() {
     const { PROP } = this.props;
-    const data = [];
-    for (let i = 0; i < 30; i += 1) {
-      const dataRow = [];
-      for (let j = 0; j < 9; j += 1) {
-        dataRow.push(`${i}${j}`);
-      }
-      data.push(dataRow);
-    }
+    console.log("a")
+    //data = this.state.data
     return (
       <View style={styles.container}>
         <View style={styles.subContainer}>
@@ -143,9 +177,111 @@ export default class CustomRadioButton extends Component {
                 title="run"
                 fontSize="5"
                 onPress={() => {
-                  alert(this.state.DataTable + "  " + this.state.radioButton);                         
-                  this.executeQuery(this.setState);
-                }
+                  this.executeQuery(this.setState)
+                  //  alert(this.state.DataTable + "  " + this.state.radioButton);  
+                 /*   this.state.test = 25
+                  
+                    const user = {
+                      "results": [
+                        {
+                          "product_id": 1,
+                          "product_name": "Chocolate Sandwich Cookies",
+                          "aisle_id": 61,
+                          "department_id": 19
+                        },
+                        {
+                          "product_id": 2,
+                          "product_name": "All-Seasons Salt",
+                          "aisle_id": 104,
+                          "department_id": 13
+                        },
+                        {
+                          "product_id": 3,
+                          "product_name": "Robust Golden Unsweetened Oolong Tea",
+                          "aisle_id": 94,
+                          "department_id": 7
+                        },
+                        {
+                          "product_id": 4,
+                          "product_name": "Smart Ones Classic Favorites Mini Rigatoni With Vodka Cream Sauce",
+                          "aisle_id": 38,
+                          "department_id": 1
+                        },
+                        {
+                          "product_id": 5,
+                          "product_name": "Green Chile Anytime Sauce",
+                          "aisle_id": 5,
+                          "department_id": 13
+                        },
+                        {
+                          "product_id": 6,
+                          "product_name": "Dry Nose Oil",
+                          "aisle_id": 11,
+                          "department_id": 11
+                        },
+                        {
+                          "product_id": 7,
+                          "product_name": "Pure Coconut Water With Orange",
+                          "aisle_id": 98,
+                          "department_id": 7
+                        },
+                        {
+                          "product_id": 8,
+                          "product_name": "Cut Russet Potatoes Steam N' Mash",
+                          "aisle_id": 116,
+                          "department_id": 1
+                        },
+                        {
+                          "product_id": 9,
+                          "product_name": "Light Strawberry Blueberry Yogurt",
+                          "aisle_id": 120,
+                          "department_id": 16
+                        },
+                        {
+                          "product_id": 10,
+                          "product_name": "Sparkling Orange Juice & Prickly Pear Beverage",
+                          "aisle_id": 115,
+                          "department_id": 7
+                        }
+                      ],
+                      "time": 303,
+                      "error": null
+                    };
+                //  var use = JSON.parse(user)
+                  var product = [];
+                  
+                  
+                 // const visit = (obj, product) => {
+                    const value = Object.values(user)
+                    var val = value[0]
+                    var ct = []
+                    for(var ob of val){
+                      var row = Object.values(ob)
+                      var tb = []
+                      for(var c of row){
+                      //  var cell = Object.values(c)
+                        product.push(c)
+                        tb.push(c)
+                      }
+                      ct.push(tb)
+                    }
+                    var v =Object.keys(val[1])
+                    this.state.tableHead = v
+                    this.state.data = ct
+                    //product.push(ct);
+                 
+                  
+                  
+  
+                  
+  
+                  alert(product);
+                    
+                    this.setState({})                   
+                   // this.executeQuery(this.setState);
+                   */
+                  this.setState({})
+                  }
               }
               />
             </View>
