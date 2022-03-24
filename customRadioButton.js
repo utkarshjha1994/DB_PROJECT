@@ -12,6 +12,8 @@ export default class CustomRadioButton extends Component {
  // tableHead = ['Head', 'Head2', 'Head3', 'Head4', 'Head5', 'Head6', 'Head7', 'Head8', 'Head9']
  state = {
     radioButton: null,
+    result :[] ,
+    text : null,
     
     HeadTable: ['Head1', 'Head2', 'Head3', 'Head4', 'Head5'],
     DataTable: [
@@ -28,7 +30,7 @@ export default class CustomRadioButton extends Component {
   }; 
 
  
-  executeQuery() {
+   executeQuery = async() => {
     const handlerType = this.state.radioButton;
     if (this.dbInstance && this.dbInstance.getName() != handlerType) {
    
@@ -40,69 +42,20 @@ export default class CustomRadioButton extends Component {
     }
     console.log(this.dbInstance);
     console.log(this.state.radioButton);
-    const result = this.dbInstance.executeQuery(this.state.query)
-    result.then(this.populateDb);
+    var result = await this.dbInstance.executeQuery(this.state.query)
+   // console.log(result)
+   //this.state.result .then( this.setState({}));
+    //alert(res)
+    return result
+    
   }   
 
-  populateDb(result){
-    //console.log(result)
-   /* try{
-      var user = JSON.parse(result)
-    }
-    
-    catch(error){
-      alert(error)
-    }*/
-      
-     // alert(result)
-     
-   //  console.log(result)
-    var product = []
-                  
-                  
-    // const visit = (obj, product) => {
-      
-       const value = Object.values(result)
-       console.log("values are")
-       //console.log(value)
-
-       var val = value[0]
-      // console.log(val)
-       var ct = []
-       var v = []
-       console.log("b")
-       var header 
-       for(var ob of val){
-         var row = Object.values(ob)
-          header = Object.keys(ob)
-       /*  console.log("new values are")
-         alert(row)
-        // console.log(row)
-         var tb = []
-         for(var c of row){
-           var cell = Object.values(c)
-           product.push(cell)
-           tb.push(cell)
-         } */
-         
-         ct.push(row)
-       }
-       v.push(header)
-       //alert(v)
-     //  alert(product)
-       this.state.tableHead = v
-       data = ct
-     //  console.log(v)
-
-       alert(ct);
-                    
-      //  this.setState({}) 
-  }
 
   render() {
+    console.log(this.state.result)
     const { PROP } = this.props;
     console.log("a")
-    //data = this.state.data
+    data = this.state.data
     return (
       <View style={styles.container}>
         <View style={styles.subContainer}>
@@ -132,7 +85,7 @@ export default class CustomRadioButton extends Component {
               <Button
                 title="Instacart"
                 fontSize="5"
-                onPress={() => alert(this.state.radioButton)}
+                onPress={ () => alert(this.state.radioButton)}
               />
             </View>
 
@@ -176,110 +129,41 @@ export default class CustomRadioButton extends Component {
               <Button
                 title="run"
                 fontSize="5"
-                onPress={() => {
-                  this.executeQuery(this.setState)
-                  //  alert(this.state.DataTable + "  " + this.state.radioButton);  
-                 /*   this.state.test = 25
+                onPress= { async () => {
+                  if(this.state.radioButton == null)
+                  {
+                    alert("select ")
+                    throw("enter again")
+                  }
+                  var result = await this.executeQuery()
+                  console.log(result)
+                  const value = Object.values(result)
+                  console.log("values are")
+       
+           
+                  var val = value[0]
+                  console.log(value[2])
+                  this.state.text = value[2]
+                  var ct = []
+                  var v = []
+                  console.log("b")
+                  var header 
+                  for(var ob of val){
+                    var row = Object.values(ob)
+                     header = Object.keys(ob)
                   
-                    const user = {
-                      "results": [
-                        {
-                          "product_id": 1,
-                          "product_name": "Chocolate Sandwich Cookies",
-                          "aisle_id": 61,
-                          "department_id": 19
-                        },
-                        {
-                          "product_id": 2,
-                          "product_name": "All-Seasons Salt",
-                          "aisle_id": 104,
-                          "department_id": 13
-                        },
-                        {
-                          "product_id": 3,
-                          "product_name": "Robust Golden Unsweetened Oolong Tea",
-                          "aisle_id": 94,
-                          "department_id": 7
-                        },
-                        {
-                          "product_id": 4,
-                          "product_name": "Smart Ones Classic Favorites Mini Rigatoni With Vodka Cream Sauce",
-                          "aisle_id": 38,
-                          "department_id": 1
-                        },
-                        {
-                          "product_id": 5,
-                          "product_name": "Green Chile Anytime Sauce",
-                          "aisle_id": 5,
-                          "department_id": 13
-                        },
-                        {
-                          "product_id": 6,
-                          "product_name": "Dry Nose Oil",
-                          "aisle_id": 11,
-                          "department_id": 11
-                        },
-                        {
-                          "product_id": 7,
-                          "product_name": "Pure Coconut Water With Orange",
-                          "aisle_id": 98,
-                          "department_id": 7
-                        },
-                        {
-                          "product_id": 8,
-                          "product_name": "Cut Russet Potatoes Steam N' Mash",
-                          "aisle_id": 116,
-                          "department_id": 1
-                        },
-                        {
-                          "product_id": 9,
-                          "product_name": "Light Strawberry Blueberry Yogurt",
-                          "aisle_id": 120,
-                          "department_id": 16
-                        },
-                        {
-                          "product_id": 10,
-                          "product_name": "Sparkling Orange Juice & Prickly Pear Beverage",
-                          "aisle_id": 115,
-                          "department_id": 7
-                        }
-                      ],
-                      "time": 303,
-                      "error": null
-                    };
-                //  var use = JSON.parse(user)
-                  var product = [];
-                  
-                  
-                 // const visit = (obj, product) => {
-                    const value = Object.values(user)
-                    var val = value[0]
-                    var ct = []
-                    for(var ob of val){
-                      var row = Object.values(ob)
-                      var tb = []
-                      for(var c of row){
-                      //  var cell = Object.values(c)
-                        product.push(c)
-                        tb.push(c)
-                      }
-                      ct.push(tb)
-                    }
-                    var v =Object.keys(val[1])
-                    this.state.tableHead = v
-                    this.state.data = ct
-                    //product.push(ct);
-                 
-                  
-                  
-  
-                  
-  
-                  alert(product);
                     
-                    this.setState({})                   
-                   // this.executeQuery(this.setState);
-                   */
+                    ct.push(row)
+                  }
+                  head = []
+                  for(var i = 0;i<header.length;i++){
+                    head.push(220)
+                  }
+                  this.state.widthArr = head
+                  console.log(result)
+                  v.push(header)
+                  this.state.tableHead = header
+                  this.state.data = ct
                   this.setState({})
                   }
               }
@@ -287,7 +171,7 @@ export default class CustomRadioButton extends Component {
             </View>
             <Text style={{ marginTop: 25, marginLeft: 100, fontSize: 15 }}>
               {" "}
-              Time Elapsed
+              Time Elapsed :{this.state.text}
             </Text>
           </View>
           
