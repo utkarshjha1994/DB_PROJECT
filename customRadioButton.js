@@ -171,7 +171,12 @@ export default class CustomRadioButton extends Component {
                   this.setState({})
                 }
                 catch(err){
-                  alert(err)
+                  this.state.data=[]
+                  this.state.tableHead = []
+                  this.state.widthArr = []
+                  this.state.text = null
+                  this.setState({})
+                  alert("issue in query,please enter again. Having following issue....."+err)
                 }
                   }
               }
