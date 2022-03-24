@@ -58,7 +58,7 @@ export default class CustomRadioButton extends Component {
   render() {
     console.log(this.state.result)
     const { PROP } = this.props;
-    let data = this.state.tableHead
+    let data = this.state.data
     return (
       <View style={styles.container}>
         <View style={styles.subContainer}>

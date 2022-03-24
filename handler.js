@@ -2,7 +2,7 @@ export const getDbInstance = (dbType) => {
     if (dbType === "mysql") {
         return new MySqlHandler(dbType);
     } else if (dbType === "redshift") {
-        return new RedshiftHandler(dbType);
+        return new RedShiftHandler(dbType);
     } else {
         return null;
     }
@@ -41,11 +41,7 @@ class MySqlHandler {
     }
 }
 
-<<<<<<< HEAD
 class RedShiftHandler {
-=======
-class RedshiftHandler {
->>>>>>> 8898722b1cc266d173b007774f904cbf6a488a95
     name = ""
     constructor(name) {
         this.name = name;
