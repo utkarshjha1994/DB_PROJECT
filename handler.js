@@ -30,6 +30,7 @@ class MySqlHandler {
             });
             return await response.json();
         }catch(err) {
+            alert("connetion error "+err)
             console.log("err2");
             console.log(err);
             throw error;
@@ -40,7 +41,7 @@ class MySqlHandler {
     }
 }
 
-class Redshift {
+class RedShiftHandler {
     name = ""
     constructor(name) {
         this.name = name;

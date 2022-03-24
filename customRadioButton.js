@@ -42,7 +42,13 @@ export default class CustomRadioButton extends Component {
     }
     console.log(this.dbInstance);
     console.log(this.state.radioButton);
-    var result = await this.dbInstance.executeQuery(this.state.query)
+    try{
+      var result = await this.dbInstance.executeQuery(this.state.query)
+    }
+    catch(err){
+      alert(err)
+    }
+    
    // console.log(result)
    //this.state.result .then( this.setState({}));
     //alert(res)
@@ -70,9 +76,7 @@ export default class CustomRadioButton extends Component {
             >
               Query{" "}
             </Text>
-            <Text style={{ textAlign: "left", marginTop: 30, marginLeft: 5 }}>
-              Database
-            </Text>
+           
             <View
               style={{
                 marginTop: 20,
@@ -129,6 +133,7 @@ export default class CustomRadioButton extends Component {
               <Button
                 title="run"
                 fontSize="5"
+                color="black"
                 onPress= { async () => {
                   if(this.state.radioButton == null)
                   {
@@ -140,14 +145,16 @@ export default class CustomRadioButton extends Component {
                   const value = Object.values(result)
                   console.log("values are")
        
-           
-                  var val = value[0]
+           try{
+            
+                  var val = value[0]                 
                   console.log(value[2])
                   this.state.text = value[2]
                   var ct = []
                   var v = []
                   console.log("b")
                   var header 
+
                   for(var ob of val){
                     var row = Object.values(ob)
                      header = Object.keys(ob)
@@ -165,6 +172,10 @@ export default class CustomRadioButton extends Component {
                   this.state.tableHead = header
                   this.state.data = ct
                   this.setState({})
+                }
+                catch(err){
+                  alert(err)
+                }
                   }
               }
               />
@@ -214,7 +225,7 @@ const styles = StyleSheet.create({
   subContainer: {
     marginTop: 0,
     height: 800,
-    width: 400,
+    width: "100%",
     borderColor: "black",
   },
 
