@@ -8,8 +8,12 @@ import {getDbInstance} from './handler';
 
 export default class CustomRadioButton extends Component {
   dbInstance = null;
+ 
+ // tableHead = ['Head', 'Head2', 'Head3', 'Head4', 'Head5', 'Head6', 'Head7', 'Head8', 'Head9']
  state = {
     radioButton: null,
+    result :[] ,
+    text : null,
     
     HeadTable: ['Head1', 'Head2', 'Head3', 'Head4', 'Head5'],
     DataTable: [
@@ -21,23 +25,12 @@ export default class CustomRadioButton extends Component {
     ],
 
     tableHead: ['Head', 'Head2', 'Head3', 'Head4', 'Head5', 'Head6', 'Head7', 'Head8', 'Head9'],
-      widthArr: [80, 80, 80, 80, 80, 80, 80, 80, 80]
+      widthArr: [180, 180, 180, 180, 180, 180, 180, 180, 180],
+      data: []
   }; 
 
- /* constructor(props) {
-    super(props);
-    this.state = {
-      HeadTable: ['Head1', 'Head2', 'Head3', 'Head4', 'Head5'],
-      DataTable: [
-        ['1', '2', '3', '4', '5'],
-        ['a', 'b', 'c', 'd', 'e'],
-        ['1', '2', '3', '4', '5'],
-        ['a', 'b', 'c', 'd', 'e'],
-        ['1', '2', '3', '4', '5']
-      ]
-    }
-  } */
-  executeQuery() {
+ 
+   executeQuery = async() => {
     const handlerType = this.state.radioButton;
     if (this.dbInstance && this.dbInstance.getName() != handlerType) {
       this.dbInstance = getDbInstance(handlerType)
@@ -47,20 +40,19 @@ export default class CustomRadioButton extends Component {
     }
     console.log(this.dbInstance);
     console.log(this.state.radioButton);
-    const result = this.dbInstance.executeQuery(this.state.query)
-    result.then(console.log);
+    var result = await this.dbInstance.executeQuery(this.state.query)
+   // console.log(result)
+   //this.state.result .then( this.setState({}));
+    //alert(res)
+    return result
+    
   }   
 
+
   render() {
+    console.log(this.state.result)
     const { PROP } = this.props;
-    const data = [];
-    for (let i = 0; i < 30; i += 1) {
-      const dataRow = [];
-      for (let j = 0; j < 9; j += 1) {
-        dataRow.push(`${i}${j}`);
-      }
-      data.push(dataRow);
-    }
+    let data = this.state.tableHead
     return (
       <View style={styles.container}>
         <View style={styles.subContainer}>
@@ -90,7 +82,7 @@ export default class CustomRadioButton extends Component {
               <Button
                 title="Instacart"
                 fontSize="5"
-                onPress={() => alert(this.state.radioButton)}
+                onPress={ () => alert(this.state.radioButton)}
               />
             </View>
 
@@ -134,33 +126,66 @@ export default class CustomRadioButton extends Component {
               <Button
                 title="run"
                 fontSize="5"
-                onPress={() => {
-                  alert(this.state.DataTable + "  " + this.state.radioButton);                         
-                  this.executeQuery(this.setState);
-                }
+                onPress= { async () => {
+                  if(this.state.radioButton == null)
+                  {
+                    alert("select ")
+                    throw("enter again")
+                  }
+                  var result = await this.executeQuery()
+                  console.log(result)
+                  const value = Object.values(result)
+                  console.log("values are")
+       
+           
+                  var val = value[0]
+                  console.log(value[2])
+                  this.state.text = value[2]
+                  var ct = []
+                  var v = []
+                  console.log("b")
+                  var header 
+                  for(var ob of val){
+                    var row = Object.values(ob)
+                     header = Object.keys(ob)
+                  
+                    
+                    ct.push(row)
+                  }
+                  var head = []
+                  for(var i = 0;i<header.length;i++){
+                    head.push(220)
+                  }
+                  this.state.widthArr = head
+                  console.log(result)
+                  v.push(header)
+                  this.state.tableHead = header
+                  this.state.data = ct
+                  this.setState({})
+                  }
               }
               />
             </View>
             <Text style={{ marginTop: 25, marginLeft: 100, fontSize: 15 }}>
               {" "}
-              Time Elapsed
+              Time Elapsed :{this.state.text}
             </Text>
           </View>
           
           <ScrollView horizontal={true}>
           <View>
-            <Table borderStyle={{borderColor: '#C1C0B9'}}>
+            <Table Style={{"borderWidth":2, 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}>
               <Row data={this.state.tableHead} widthArr={this.state.widthArr} style={styles.head} textStyle={styles.text}/>
             </Table>
             <ScrollView style={styles.dataWrapper}>
-              <Table borderStyle={{borderColor: '#C1C0B9'}}>
+              <Table Style={{"borderWidth":2, 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}>
                 {
                   data.map((dataRow, index) => (
                     <Row
                       key={index}
                       data={dataRow}
                       widthArr={this.state.widthArr}
-                      style={[styles.row, index%2 && {backgroundColor: '#ffffff'}]}
+                      style={{border: "3px solid rgb(0, 0, 0)"}}
                       textStyle={styles.text}
                     />
                   ))
@@ -249,4 +274,5 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     backgroundColor: "blue",
   },
+  text:{margin: 6}
 });

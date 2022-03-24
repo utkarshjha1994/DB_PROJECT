@@ -15,6 +15,7 @@ class MySqlHandler {
     }
     async executeQuery(query) {
         try{
+            console.log("err")
             const response = await fetch('https://polar-forest-84901.herokuapp.com/mysql', {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 mode: 'cors', // no-cors, *cors, same-origin
@@ -29,7 +30,9 @@ class MySqlHandler {
             });
             return await response.json();
         }catch(err) {
+            console.log("err2");
             console.log(err);
+            throw error;
         }
     }
     getName() {
