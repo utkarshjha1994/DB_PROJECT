@@ -155,7 +155,7 @@ export default class CustomRadioButton extends Component {
                     
                     ct.push(row)
                   }
-                  head = []
+                  var head = []
                   for(var i = 0;i<header.length;i++){
                     head.push(220)
                   }
@@ -177,18 +177,18 @@ export default class CustomRadioButton extends Component {
           
           <ScrollView horizontal={true}>
           <View>
-            <Table borderStyle={{borderColor: '#C1C0B9'}}>
+            <Table Style={{"borderWidth":2, 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}>
               <Row data={this.state.tableHead} widthArr={this.state.widthArr} style={styles.head} textStyle={styles.text}/>
             </Table>
             <ScrollView style={styles.dataWrapper}>
-              <Table borderStyle={{borderColor: '#C1C0B9'}}>
+              <Table Style={{"borderWidth":2, 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}>
                 {
                   data.map((dataRow, index) => (
                     <Row
                       key={index}
                       data={dataRow}
                       widthArr={this.state.widthArr}
-                      style={[styles.row, index%2 && {backgroundColor: '#ffffff'}]}
+                      style={{border: "3px solid rgb(0, 0, 0)"}}
                       textStyle={styles.text}
                     />
                   ))
@@ -277,4 +277,5 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     backgroundColor: "blue",
   },
+  text:{margin: 6}
 });
