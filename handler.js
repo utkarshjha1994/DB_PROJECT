@@ -2,7 +2,7 @@ export const getDbInstance = (dbType) => {
     if (dbType === "mysql") {
         return new MySqlHandler(dbType);
     } else if (dbType === "redshift") {
-        return new RedShiftHandler(dbType);
+        return new RedshiftHandler(dbType);
     } else {
         return null;
     }
@@ -41,7 +41,11 @@ class MySqlHandler {
     }
 }
 
+<<<<<<< HEAD
 class RedShiftHandler {
+=======
+class RedshiftHandler {
+>>>>>>> 8898722b1cc266d173b007774f904cbf6a488a95
     name = ""
     constructor(name) {
         this.name = name;
@@ -49,11 +53,17 @@ class RedShiftHandler {
     async executeQuery(query) {
         try{
             const response = await fetch('https://polar-forest-84901.herokuapp.com/redshift', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                query: query
-                            })
-                        });
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                headers: {
+                  'Content-Type': 'application/json'
+                  // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: JSON.stringify({
+                    "query": query
+                }),
+            });
             return await response.json();
         }catch(err) {
             console.log(err);
