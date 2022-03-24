@@ -62,12 +62,12 @@ export default class CustomRadioButton extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.subContainer}>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row",width :"97%",marginTop:"5%" }}>
             <Text
               style={{
                 textAlign: "left",
                 marginTop: 50,
-                marginLeft: 20,
+                marginLeft: "5%",
                 fontSize: 10,
               }}
             >
@@ -76,21 +76,21 @@ export default class CustomRadioButton extends Component {
            
             <View
               style={{
-                marginTop: 20,
-                margin: 10,
+                margin: "5%",
                 height: 40,
                 width: 100,
                 fontSize: 5,
               }}
             >
-              <Button
+              <Button 
+
                 title="Instacart"
-                fontSize="5"
+                style={{fontSize:"1%"}}
                 onPress={ () => alert(this.state.radioButton)}
               />
             </View>
 
-            <View style={{ flexDirection: "row", marginLeft: 5,marginBottom:10, justifyContent:"center", alignItems: "baseline" }}>
+            <View style={{ flexDirection: "row", marginLeft: "1%",marginBottom:"5%", justifyContent:"center", alignItems: "baseline" }}>
               {PROP.map((res) => {
                 return (
                   <View key={res.key} style={styles.rbWrapper}>
@@ -120,10 +120,10 @@ export default class CustomRadioButton extends Component {
           <View style={{ flexDirection: "row" }}>
             <View
               style={{
-                marginTop: 20,
-                margin: 10,
-                height: 40,
-                width: 100,
+                marginTop: "5%",
+                margin: "3%",
+                height: "75%",
+                width: "25%",
                 fontSize: 5,
               }}
             >
@@ -182,7 +182,7 @@ export default class CustomRadioButton extends Component {
               }
               />
             </View>
-            <Text style={{ marginTop: 25, marginLeft: 100, fontSize: 15 }}>
+            <Text style={{ marginTop: "7%", marginLeft: "10%", fontSize: 15 }}>
               {" "}
               Time Elapsed :{this.state.text}
             </Text>
@@ -226,8 +226,8 @@ const styles = StyleSheet.create({
   },
   subContainer: {
     marginTop: 0,
-    height: 800,
-    width: "100%",
+    height: "95%",
+    width: "90%",
     borderColor: "black",
   },
 
@@ -238,8 +238,8 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    height: 300,
-    margin: 12,
+    height: "30%",
+    margin: "5%",
     marginTop: 0,
     borderWidth: 1,
     padding: 10,
@@ -252,9 +252,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   textStyle: {
-    marginRight: 5,
-    marginLeft: 5,
-    marginTop: 30,
+    marginRight: "2.5%",
+    marginLeft: "2.5%",
+    marginTop: "30%",
     fontSize: 10,
     color: "#444",
     fontWeight: "700",
@@ -263,8 +263,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     height: 20,
     width: 20,
-    marginLeft: 5,
-    marginTop: 30,
+    marginLeft: "2.5%",
+    marginTop: "30%",
     borderRadius: 110,
     borderWidth: 2,
     borderColor: "#2750aa",
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
   },
   head: { 
     height: 50, 
-    backgroundColor: '#6F7BD9' 
+    backgroundColor: 'grey' 
   },
   result: {
     marginTop: 22,
