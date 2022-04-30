@@ -32,11 +32,12 @@ export default class CustomRadioButton extends Component {
  
    executeQuery = async() => {
     const handlerType = this.state.radioButton;
+    const databaseName = this.state.databaseName;
     if (this.dbInstance && this.dbInstance.getName() != handlerType) {
-      this.dbInstance = getDbInstance(handlerType)
+      this.dbInstance = getDbInstance(handlerType, databaseName)
     }
     if (!this.dbInstance) {
-      this.dbInstance = getDbInstance(handlerType);
+      this.dbInstance = getDbInstance(handlerType, databaseName);
     }
     console.log(this.dbInstance);
     console.log(this.state.radioButton);

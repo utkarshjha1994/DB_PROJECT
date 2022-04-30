@@ -1,8 +1,8 @@
 export const getDbInstance = (dbType) => {
     if (dbType === "mysql") {
-        return new MySqlHandler(dbType);
+        return new MySqlHandler(dbType, dbName);
     } else if (dbType === "redshift") {
-        return new RedShiftHandler(dbType);
+        return new RedShiftHandler(dbType, dbName);
     } else {
         return null;
     }
@@ -10,8 +10,10 @@ export const getDbInstance = (dbType) => {
 
 class MySqlHandler {
     name = ""
-    constructor(name) {
+    databaseName = "";
+    constructor(name, databaseName) {
         this.name = name;
+        this.databaseName = databaseName;
     }
     async executeQuery(query) {
         try{
@@ -25,7 +27,8 @@ class MySqlHandler {
                   // 'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 body: JSON.stringify({
-                    "query": query
+                    "query": query,
+                    "database": this.databaseName,
                 }),
             });
             return await response.json();
@@ -43,8 +46,10 @@ class MySqlHandler {
 
 class RedShiftHandler {
     name = ""
-    constructor(name) {
+    databaseName = "";
+    constructor(name, databaseName) {
         this.name = name;
+        this.databaseName = databaseName;
     }
     async executeQuery(query) {
         try{
@@ -57,7 +62,8 @@ class RedShiftHandler {
                   // 'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 body: JSON.stringify({
-                    "query": query
+                    "query": query,
+                    "database": this.databaseName,
                 }),
             });
             return await response.json();
