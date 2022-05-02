@@ -1,4 +1,4 @@
-export const getDbInstance = (dbType) => {
+export const getDbInstance = (dbType,dbName) => {
     if (dbType === "mysql") {
         return new MySqlHandler(dbType, dbName);
     } else if (dbType === "redshift") {
@@ -15,10 +15,16 @@ class MySqlHandler {
         this.name = name;
         this.databaseName = databaseName;
     }
-    async executeQuery(query) {
+    async executeQuery(query, databaseName) {
+        if (databaseName === undefined) { 
+            alert("Database name is not defined");
+        }
+        if (databaseName !== this.databaseName) {
+            this.databaseName = databaseName;
+        }
         try{
             console.log("err")
-            const response = await fetch('https://polar-forest-84901.herokuapp.com/mysql', {
+            const response = await fetch('http://localhost:3000/mysql', {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 mode: 'cors', // no-cors, *cors, same-origin
                 cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -49,11 +55,18 @@ class RedShiftHandler {
     databaseName = "";
     constructor(name, databaseName) {
         this.name = name;
-        this.databaseName = databaseName;
+        this.databaseName = databaseName == 'Instacart' ? 'dev' : 'abc_retail';
     }
-    async executeQuery(query) {
+    async executeQuery(query, databaseName) {
+        if (databaseName === undefined) { 
+            alert("Database name is not defined");
+        }
+        if (databaseName != 'Instacart') {
+            this.databaseName = 'abc_retail';
+        }
+        
         try{
-            const response = await fetch('https://polar-forest-84901.herokuapp.com/redshift', {
+            const response = await fetch('http://localhost:3000/redshift', {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 mode: 'cors', // no-cors, *cors, same-origin
                 cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached

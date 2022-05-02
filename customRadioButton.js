@@ -14,6 +14,7 @@ export default class CustomRadioButton extends Component {
     radioButton: null,
     result :[] ,
     text : null,
+    database:"Instacart",
     
     HeadTable: ['Head1', 'Head2', 'Head3', 'Head4', 'Head5'],
     DataTable: [
@@ -24,15 +25,19 @@ export default class CustomRadioButton extends Component {
       ['1', '2', '3', '4', '5']
     ],
 
-    tableHead: ['Head', 'Head2', 'Head3', 'Head4', 'Head5', 'Head6', 'Head7', 'Head8', 'Head9'],
-      widthArr: [180, 180, 180, 180, 180, 180, 180, 180, 180],
+    tableHead: ['Head', 'Head2', 'Head3', 'Head4', 'Head5'],
+      widthArr: [180, 180, 180, 180, 180],
       data: []
   }; 
 
  
    executeQuery = async() => {
     const handlerType = this.state.radioButton;
-    const databaseName = this.state.databaseName;
+    const databaseName = this.state.database;
+    if (!handlerType || !databaseName) {
+      alert("Please select a handler and database");
+      return;
+    }
     if (this.dbInstance && this.dbInstance.getName() != handlerType) {
       this.dbInstance = getDbInstance(handlerType, databaseName)
     }
@@ -42,7 +47,7 @@ export default class CustomRadioButton extends Component {
     console.log(this.dbInstance);
     console.log(this.state.radioButton);
     try{
-      var result = await this.dbInstance.executeQuery(this.state.query)
+      var result = await this.dbInstance.executeQuery(this.state.query, this.state.database);
     }
     catch(err){
       alert(err)
@@ -63,33 +68,42 @@ export default class CustomRadioButton extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.subContainer}>
-          <View style={{ flexDirection: "row",width :"97%",marginTop:"5%" }}>
-            <Text
-              style={{
-                textAlign: "left",
-                marginTop: 50,
-                marginLeft: "5%",
-                fontSize: 10,
-              }}
-            >
-              Query{" "}
-            </Text>
-           
+          <View style={{ flexDirection: "row",marginLeft:"0%",marginTop: "5%" }}>
+            
+           <View
+           style ={{marginLeft:"5%"}}>
             <View
               style={{
-                margin: "5%",
+                marginTop:"5%",
                 height: 40,
-                width: 100,
+                width: "100%",
                 fontSize: 5,
               }}
             >
               <Button 
 
                 title="Instacart"
-                style={{fontSize:"1%"}}
-                onPress={ () => alert(this.state.radioButton)}
-              />
+                fontSize="5"
+                onPress={ () => {
+                  this.state.database="Instacart"
+                  this.setState({})
+                }
+                } />
+              
             </View>
+            <View
+              style={{marginTop:"0%",width: "100%"}}>
+              <Button
+                color="purple"
+                title="ABC"
+                fontSize="5"
+                onPress={ () => {
+                  this.state.database="ABCRetail"
+                  this.setState({})
+                }
+                } />
+              </View>
+              </View>
 
             <View style={{ flexDirection: "row", marginLeft: "1%",marginBottom:"5%", justifyContent:"center", alignItems: "baseline" }}>
               {PROP.map((res) => {
@@ -114,17 +128,41 @@ export default class CustomRadioButton extends Component {
 
             <StatusBar style="{auto" />
           </View>
-          <TextInput style={styles.input} multiline={true} numberOfLines={4} value={this.state.query} onChangeText = {(query) => {
+          <Text
+              style={{
+                textAlign: "left",
+                marginTop:"2%",
+                marginBottom:"0%",
+                marginLeft: "5%",
+                fontSize: 20,
+                
+              }}
+            >
+              Database selected: {this.state.database}
+            </Text>  
+            <Text
+              style={{
+                textAlign: "left",
+                marginTop: "5%",
+                marginLeft: "5%",
+                fontSize: 15,
+              }}
+            >
+              Query{": "}
+            </Text>        
+            <TextInput style={styles.input}  multiline={true} numberOfLines={4} value={this.state.query} onChangeText = {(query) => {
             this.setState({query});
             console.log(query);
           }}/>
           <View style={{ flexDirection: "row" }}>
             <View
               style={{
+                flexDirection: "row",
                 marginTop: "5%",
                 margin: "3%",
-                height: "75%",
-                width: "25%",
+                marginRight:"2%",
+                height: "50%",
+                width: "30%",
                 fontSize: 5,
               }}
             >
@@ -135,7 +173,7 @@ export default class CustomRadioButton extends Component {
                 onPress= { async () => {
                   if(this.state.radioButton == null)
                   {
-                    alert("select ")
+                    alert("Please select an option")
                     throw("enter again")
                   }
                   var result = await this.executeQuery()
@@ -146,25 +184,28 @@ export default class CustomRadioButton extends Component {
            try{
             
                   var val = value[0]                 
-                  console.log(value[2])
+                  console.log(value[0])
                   this.state.text = value[2]
                   var ct = []
                   var v = []
                   console.log("b")
-                  var header 
-
+                  var header = null
                   for(var ob of val){
+                    console.log("d  ")
                     var row = Object.values(ob)
                      header = Object.keys(ob)
                   
                     
                     ct.push(row)
                   }
+                  console.log("c")
                   var head = []
                   for(var i = 0;i<header.length;i++){
                     head.push(220)
                   }
                   this.state.widthArr = head
+                  
+
                   console.log(result)
                   v.push(header)
                   this.state.tableHead = header
@@ -172,17 +213,41 @@ export default class CustomRadioButton extends Component {
                   this.setState({})
                 }
                 catch(err){
-                  this.state.data=[]
-                  this.state.tableHead = []
-                  this.state.widthArr = []
-                  this.state.text = null
-                  this.setState({})
-                  alert("issue in query,please enter again. Having following issue....."+err)
+                  try{
+                    var val = value[0] 
+                    error = Object.values(val)  
+                    console.log("b1")              
+                    console.log("error[2]")
+
+                    this.state.data=[]
+                    this.state.tableHead = []
+                    this.state.widthArr = []
+                    this.state.text = null
+                    this.setState({})
+                    alert("Error in Query - "+error[2])
+                  }
+                  catch(err){
+                    alert("error is "+err)
+                  }
                 }
                   }
               }
               />
+               <View
+              style={{marginleft:"5%"}}>
+              <Button
+                color="red"
+                title="Delete"
+                fontSize="5"
+                onPress={ () => {
+                  this.state.query=null
+                  this.setState({})
+                }
+                }
+              />
+              </View>
             </View>
+            
             <Text style={{ marginTop: "7%", marginLeft: "10%", fontSize: 15 }}>
               {" "}
               Time Elapsed :{this.state.text}
@@ -191,7 +256,7 @@ export default class CustomRadioButton extends Component {
           
           <ScrollView horizontal={true}>
           <View>
-            <Table Style={{"borderWidth":2, 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}>
+            <Table Style={{"borderWidth":"5%", 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}>
               <Row data={this.state.tableHead} widthArr={this.state.widthArr} style={styles.head} textStyle={styles.text}/>
             </Table>
             <ScrollView style={styles.dataWrapper}>
@@ -226,9 +291,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   subContainer: {
-    marginTop: 0,
-    height: "95%",
-    width: "90%",
+    marginTop: "10%",
+    height: "100%",
+    width: "100%",
     borderColor: "black",
   },
 
@@ -240,8 +305,8 @@ const styles = StyleSheet.create({
 
   input: {
     height: "30%",
-    margin: "5%",
-    marginTop: 0,
+    marginTop: "5%",
+    margin: "2%",
     borderWidth: 1,
     padding: 10,
   },
@@ -251,26 +316,29 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "center",
+    padding: "5px",
   },
   textStyle: {
-    marginRight: "2.5%",
-    marginLeft: "2.5%",
+    marginRight: "5%",
+    marginLeft: "5%",
     marginTop: "30%",
     fontSize: 10,
     color: "#444",
     fontWeight: "700",
+    padding: "5px",
   },
   rbStyle: {
     flexDirection: "column",
     height: 20,
     width: 20,
-    marginLeft: "2.5%",
+    marginLeft: "5%",
     marginTop: "30%",
     borderRadius: 110,
     borderWidth: 2,
     borderColor: "#2750aa",
     alignItems: "center",
     justifyContent: "center",
+    padding: "5px",
   },
   selected: {
     width: 16,
