@@ -34,9 +34,11 @@ export default class CustomRadioButton extends Component {
    executeQuery = async() => {
     const handlerType = this.state.radioButton;
     const databaseName = this.state.database;
+    let result = null;
+    console.log(databaseName)
     if (!handlerType || !databaseName) {
       alert("Please select a handler and database");
-      return;
+      return result;
     }
     if (this.dbInstance && this.dbInstance.getName() != handlerType) {
       this.dbInstance = getDbInstance(handlerType, databaseName)
@@ -47,26 +49,26 @@ export default class CustomRadioButton extends Component {
     console.log(this.dbInstance);
     console.log(this.state.radioButton);
     try{
-      var result = await this.dbInstance.executeQuery(this.state.query, this.state.database);
+      result = await this.dbInstance.executeQuery(this.state.query, this.state.database);
     }
     catch(err){
-      alert(err)
+      alert("Error: "+result.sqlMessage);
+    }
+    finally{
+      return result;
     }
     
    // console.log(result)
    //this.state.result .then( this.setState({}));
     //alert(res)
-    return result
-    
   }   
 
 
   render() {
-    console.log(this.state.result)
     const { PROP } = this.props;
     let data = this.state.data
     return (
-      <View style={styles.container}>
+      <View style={styles.container }>
         <View style={styles.subContainer}>
           <View style={{ flexDirection: "row",marginLeft:"0%",marginTop: "5%" }}>
             
@@ -142,19 +144,21 @@ export default class CustomRadioButton extends Component {
             </Text>  
             <Text
               style={{
-                textAlign: "left",
-                marginTop: "5%",
-                marginLeft: "5%",
+                marginTop: "10px",
                 fontSize: 15,
+                width: "60%",
+                float: "left",
               }}
             >
               Query{": "}
-            </Text>        
+            </Text>
+                    
             <TextInput style={styles.input}  multiline={true} numberOfLines={4} value={this.state.query} onChangeText = {(query) => {
             this.setState({query});
             console.log(query);
           }}/>
-          <View style={{ flexDirection: "row" }}>
+
+          <View style={{ flexDirection: "row", height: '100px', padding: '5px', width:'50%'}}>
             <View
               style={{
                 flexDirection: "row",
@@ -162,25 +166,24 @@ export default class CustomRadioButton extends Component {
                 margin: "3%",
                 marginRight:"2%",
                 height: "50%",
-                width: "30%",
+                width: "40%",
                 fontSize: 5,
+                padding: "5px",
               }}
             >
               <Button
+                style={{marginTop:"5%",marginLeft:"5%",marginRight:"5%",marginBottom:"5%", width: "100%", height: "10px !important", padding: "5px"}}
                 title="run"
                 fontSize="5"
                 color="black"
                 onPress= { async () => {
-                  if(this.state.radioButton == null)
-                  {
-                    alert("Please select an option")
-                    throw("enter again")
-                  }
                   var result = await this.executeQuery()
                   console.log(result)
+                  if (result === null) {
+                    return;
+                  }
                   const value = Object.values(result)
-                  console.log("values are")
-       
+                  console.log("values are" + value)
            try{
             
                   var val = value[0]                 
@@ -214,28 +217,25 @@ export default class CustomRadioButton extends Component {
                 }
                 catch(err){
                   try{
-                    var val = value[0] 
-                    error = Object.values(val)  
-                    console.log("b1")              
-                    console.log("error[2]")
-
+                    console.log(result)
+                    let error = result.error.sqlMessage || result.error.code
+                    alert(error);
                     this.state.data=[]
                     this.state.tableHead = []
                     this.state.widthArr = []
                     this.state.text = null
                     this.setState({})
-                    alert("Error in Query - "+error[2])
                   }
                   catch(err){
-                    alert("error is "+err)
+                    alert("error is " + err);
                   }
                 }
                   }
               }
               />
-               <View
-              style={{marginleft:"5%"}}>
+               
               <Button
+                style={{marginTop:"5%",marginLeft:"5%",marginRight:"5%",marginBottom:"5%", width: "100%", height: "20px", padding: "5%"}}
                 color="red"
                 title="Delete"
                 fontSize="5"
@@ -245,29 +245,38 @@ export default class CustomRadioButton extends Component {
                 }
                 }
               />
-              </View>
             </View>
             
-            <Text style={{ marginTop: "7%", marginLeft: "10%", fontSize: 15 }}>
+            <Text style={{ marginTop: "5%", marginLeft: "10%", fontSize: 15, padding: '5px'}}>
               {" "}
               Time Elapsed :{this.state.text}
             </Text>
           </View>
           
-          <ScrollView horizontal={true}>
-          <View>
-            <Table Style={{"borderWidth":"5%", 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}>
+          <ScrollView
+          Style={{
+          'width': '200px',
+          'height': '100px',
+          overflowX: 'auto'
+          }}>
+          <View Style={{
+                        'width': '200px',
+                        'height': '100px',
+                        overflowX: 'auto'
+                    }}
+          >
+            <Table Style={{'position': 'absolute', "borderWidth":"2%", 'borderColor':"#aaaaaa", 'borderStyle':'solid', "width":'200px', 'white-space':'no-wrap'}}>
               <Row data={this.state.tableHead} widthArr={this.state.widthArr} style={styles.head} textStyle={styles.text}/>
             </Table>
             <ScrollView style={styles.dataWrapper}>
-              <Table Style={{"borderWidth":2, 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}>
+              <Table Style={{"borderWidth":1, 'borderColor':"#aaaaaa", 'borderStyle':'solid', 'white-space':'no-wrap', width:'500px'}}>
                 {
                   data.map((dataRow, index) => (
                     <Row
                       key={index}
                       data={dataRow}
                       widthArr={this.state.widthArr}
-                      style={{border: "3px solid rgb(0, 0, 0)"}}
+                      style={{border: "2px solid rgb(0, 0, 0)"}}
                       textStyle={styles.text}
                     />
                   ))
@@ -289,26 +298,34 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    minWidth: "55%",
+    maxWidth: "95%",
+    height: "auto",
   },
   subContainer: {
-    marginTop: "10%",
-    height: "100%",
-    width: "100%",
+    marginTop: "2%",
+    height: "auto",
     borderColor: "black",
+    alignItems: "center",
+    alignContent: "center",
+    marginBottom: "2%",
+    minWidth: "55%",
+    maxWidth: "95%",
+
   },
 
   scrollView: {
     backgroundColor: 'grey',
     marginLeft: 0,
-    marginTop:1
+    marginTop:1,
   },
 
   input: {
-    height: "30%",
-    marginTop: "5%",
+    width: "50%",
     margin: "2%",
     borderWidth: 1,
     padding: 10,
+    minWidth: "80%",
   },
 
   rbWrapper: {
@@ -347,6 +364,7 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
   },
   dataWrapper: { 
+    overflowX: 'auto',
     marginTop: -1 
   },
   head: { 

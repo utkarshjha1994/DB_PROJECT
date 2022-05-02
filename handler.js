@@ -22,9 +22,9 @@ class MySqlHandler {
         if (databaseName !== this.databaseName) {
             this.databaseName = databaseName;
         }
+        console.log(databaseName);
         try{
-            console.log("err")
-            const response = await fetch('http://localhost:3000/mysql', {
+            const response = await fetch('https://polar-forest-84901.herokuapp.com/mysql', {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 mode: 'cors', // no-cors, *cors, same-origin
                 cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -34,7 +34,7 @@ class MySqlHandler {
                 },
                 body: JSON.stringify({
                     "query": query,
-                    "database": this.databaseName,
+                    "dbName": this.databaseName,
                 }),
             });
             return await response.json();
@@ -45,6 +45,7 @@ class MySqlHandler {
             throw error;
         }
     }
+
     getName() {
         return this.name;
     }
@@ -66,7 +67,7 @@ class RedShiftHandler {
         }
         
         try{
-            const response = await fetch('http://localhost:3000/redshift', {
+            const response = await fetch('https://polar-forest-84901.herokuapp.com/redshift', {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 mode: 'cors', // no-cors, *cors, same-origin
                 cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -76,7 +77,7 @@ class RedShiftHandler {
                 },
                 body: JSON.stringify({
                     "query": query,
-                    "database": this.databaseName,
+                    "dbName": this.databaseName,
                 }),
             });
             return await response.json();
