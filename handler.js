@@ -67,6 +67,7 @@ class RedShiftHandler {
         }
         
         try{
+            //https://polar-forest-84901.herokuapp.com
             const response = await fetch('https://polar-forest-84901.herokuapp.com/redshift', {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 mode: 'cors', // no-cors, *cors, same-origin

@@ -252,24 +252,12 @@ export default class CustomRadioButton extends Component {
               Time Elapsed :{this.state.text}
             </Text>
           </View>
-          
-          <ScrollView
-          Style={{
-          'width': '200px',
-          'height': '100px',
-          overflowX: 'auto'
-          }}>
-          <View Style={{
-                        'width': '200px',
-                        'height': '100px',
-                        overflowX: 'auto'
-                    }}
-          >
-            <Table Style={{'position': 'absolute', "borderWidth":"2%", 'borderColor':"#aaaaaa", 'borderStyle':'solid', "width":'200px', 'white-space':'no-wrap'}}>
+          <View style={{maxWidth:'60%'}}>
+            <ScrollView style={styles.dataWrapper}>
+            <Table Style={{'position': 'absolute', "borderWidth":"2%", 'borderColor':"#aaaaaa", 'borderStyle':'solid', whiteSpace:'no-wrap'}}>
               <Row data={this.state.tableHead} widthArr={this.state.widthArr} style={styles.head} textStyle={styles.text}/>
             </Table>
-            <ScrollView style={styles.dataWrapper}>
-              <Table Style={{"borderWidth":1, 'borderColor':"#aaaaaa", 'borderStyle':'solid', 'white-space':'no-wrap', width:'500px'}}>
+              <Table Style={{"borderWidth":1, 'borderColor':"#aaaaaa", 'borderStyle':'solid', 'white-space':'no-wrap'}}>
                 {
                   data.map((dataRow, index) => (
                     <Row
@@ -284,8 +272,6 @@ export default class CustomRadioButton extends Component {
               </Table>
             </ScrollView>
           </View>
-        </ScrollView>
-
         </View>
       </View>
     );
