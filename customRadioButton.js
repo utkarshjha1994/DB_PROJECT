@@ -100,7 +100,7 @@ export default class CustomRadioButton extends Component {
                 title="ABC"
                 fontSize="5"
                 onPress={ () => {
-                  this.state.database="ABCRetail _N"
+                  this.state.database="ABCRetail_N"
                   this.setState({})
                 }
                 } />
