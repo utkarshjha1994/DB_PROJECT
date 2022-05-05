@@ -144,10 +144,10 @@ export default class CustomRadioButton extends Component {
             </Text>  
             <Text
               style={{
-                marginTop: "10px",
+                textAlign: "left",
+                marginTop: "5%",
+                marginLeft: "5%",
                 fontSize: 15,
-                width: "60%",
-                float: "left",
               }}
             >
               Query{": "}
@@ -158,7 +158,7 @@ export default class CustomRadioButton extends Component {
             console.log(query);
           }}/>
 
-          <View style={{ flexDirection: "row", height: '100px', padding: '5px', width:'50%'}}>
+          <View style={{ flexDirection: "row"}}>
             <View
               style={{
                 flexDirection: "row",
@@ -166,13 +166,11 @@ export default class CustomRadioButton extends Component {
                 margin: "3%",
                 marginRight:"2%",
                 height: "50%",
-                width: "40%",
+                width: "30%",
                 fontSize: 5,
-                padding: "5px",
               }}
             >
               <Button
-                style={{marginTop:"5%",marginLeft:"5%",marginRight:"5%",marginBottom:"5%", width: "100%", height: "10px !important", padding: "5px"}}
                 title="run"
                 fontSize="5"
                 color="black"
@@ -235,7 +233,6 @@ export default class CustomRadioButton extends Component {
               />
                
               <Button
-                style={{marginTop:"5%",marginLeft:"5%",marginRight:"5%",marginBottom:"5%", width: "100%", height: "20px", padding: "5%"}}
                 color="red"
                 title="Delete"
                 fontSize="5"
@@ -247,24 +244,26 @@ export default class CustomRadioButton extends Component {
               />
             </View>
             
-            <Text style={{ marginTop: "5%", marginLeft: "10%", fontSize: 15, padding: '5px'}}>
+            <Text style={{ marginTop: "7%", marginLeft: "10%", fontSize: 15}}>
               {" "}
               Time Elapsed :{this.state.text}
             </Text>
           </View>
-          <View style={{maxWidth:'60%'}}>
-            <ScrollView style={styles.dataWrapper}>
-            <Table Style={{'position': 'absolute', "borderWidth":"2%", 'borderColor':"#aaaaaa", 'borderStyle':'solid', whiteSpace:'no-wrap'}}>
+          
+          <ScrollView horizontal={true}>
+          <View>
+            <Table Style={{"borderWidth":"5%", 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}>
               <Row data={this.state.tableHead} widthArr={this.state.widthArr} style={styles.head} textStyle={styles.text}/>
             </Table>
-              <Table Style={{"borderWidth":1, 'borderColor':"#aaaaaa", 'borderStyle':'solid', 'white-space':'no-wrap'}}>
+            <ScrollView style={styles.dataWrapper}>
+              <Table Style={{"borderWidth":2, 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}>
                 {
                   data.map((dataRow, index) => (
                     <Row
                       key={index}
                       data={dataRow}
                       widthArr={this.state.widthArr}
-                      style={{border: "2px solid rgb(0, 0, 0)"}}
+                      style={{border: "3px solid rgb(0, 0, 0)"}}
                       textStyle={styles.text}
                     />
                   ))
@@ -272,6 +271,7 @@ export default class CustomRadioButton extends Component {
               </Table>
             </ScrollView>
           </View>
+        </ScrollView>
         </View>
       </View>
     );
@@ -284,34 +284,26 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    minWidth: "55%",
-    maxWidth: "95%",
-    height: "auto",
   },
   subContainer: {
-    marginTop: "2%",
-    height: "auto",
+    marginTop: "10%",
+    height: "100%",
+    width: "100%",
     borderColor: "black",
-    alignItems: "center",
-    alignContent: "center",
-    marginBottom: "2%",
-    minWidth: "55%",
-    maxWidth: "95%",
-
   },
 
   scrollView: {
     backgroundColor: 'grey',
     marginLeft: 0,
-    marginTop:1,
+    marginTop:1
   },
 
   input: {
-    width: "50%",
+    height: "30%",
+    marginTop: "5%",
     margin: "2%",
     borderWidth: 1,
     padding: 10,
-    minWidth: "80%",
   },
 
   rbWrapper: {
@@ -319,7 +311,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "center",
-    padding: "5px",
   },
   textStyle: {
     marginRight: "5%",
@@ -328,7 +319,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: "#444",
     fontWeight: "700",
-    padding: "5px",
   },
   rbStyle: {
     flexDirection: "column",
@@ -341,7 +331,6 @@ const styles = StyleSheet.create({
     borderColor: "#2750aa",
     alignItems: "center",
     justifyContent: "center",
-    padding: "5px",
   },
   selected: {
     width: 16,
@@ -350,12 +339,11 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
   },
   dataWrapper: { 
-    overflowX: 'auto',
     marginTop: -1 
   },
   head: { 
     height: 50, 
-    backgroundColor: 'grey' 
+    backgroundColor: '#6F7BD9' 
   },
   result: {
     marginTop: 22,
