@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { TouchableOpacity, View, StyleSheet, Text, ScrollView } from "react-native";
+import { TouchableOpacity, View, StyleSheet, Text, ScrollView,TouchableWithoutFeedback, Keyboard
+} from "react-native";
 import { Button, TextInput } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
@@ -15,6 +16,7 @@ export default class CustomRadioButton extends Component {
     result :[] ,
     text : null,
     database:"Instacart",
+    i:0,
     
     HeadTable: ['Head1', 'Head2', 'Head3', 'Head4', 'Head5'],
     DataTable: [
@@ -63,14 +65,29 @@ export default class CustomRadioButton extends Component {
    //this.state.result .then( this.setState({}));
     //alert(res)
   }   
-
+  
 
   render() {
+
+   let  func = function(i){
+      if (i%2==0){
+       i = 1
+        return 'grey'
+      }
+      else{
+        i = 0
+        return 'antiquewhite'
+      }
+  
+    }
+     
     const { PROP } = this.props;
     let data = this.state.data
     return (
+      
       <View style={styles.container }>
         <View style={styles.subContainer}>
+          
           <View style={{ flexDirection: "row",marginLeft:"0%",marginTop: "5%" }}>
             
            <View
@@ -153,11 +170,13 @@ export default class CustomRadioButton extends Component {
             >
               Query{": "}
             </Text>
-                    
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} 
+                                accessible={false}>  
             <TextInput style={styles.input}  multiline={true} numberOfLines={4} value={this.state.query} onChangeText = {(query) => {
             this.setState({query});
             console.log(query);
           }}/>
+          </TouchableWithoutFeedback>
 
           <View style={{ flexDirection: "row"}}>
             <View
@@ -250,8 +269,8 @@ export default class CustomRadioButton extends Component {
               Time Elapsed :{this.state.text}
             </Text>
           </View>
-          
-          <ScrollView horizontal={true}>
+
+          <ScrollView horizontal={true} >
           <View>
             <Table Style={{"borderWidth":"5%", 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}>
               <Row data={this.state.tableHead} widthArr={this.state.widthArr} style={styles.head} textStyle={styles.text}/>
@@ -264,7 +283,7 @@ export default class CustomRadioButton extends Component {
                       key={index}
                       data={dataRow}
                       widthArr={this.state.widthArr}
-                      style={{border: "3px solid rgb(0, 0, 0)"}}
+                      style={{border: "3px solid rgb(0, 0, 0)",backgroundColor:func(index)}}
                       textStyle={styles.text}
                     />
                   ))
@@ -275,6 +294,7 @@ export default class CustomRadioButton extends Component {
         </ScrollView>
         </View>
       </View>
+
     );
   }
 }
@@ -300,8 +320,9 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    height: "30%",
+    height: "15%",
     marginTop: "5%",
+    marginLeft: "5%",
     margin: "2%",
     borderWidth: 1,
     padding: 10,
@@ -340,7 +361,8 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
   },
   dataWrapper: { 
-    marginTop: -1 
+    marginTop: -1 ,
+    marginBottom: 10
   },
   head: { 
     height: 50, 
