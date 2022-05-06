@@ -65,7 +65,7 @@ class RedShiftHandler {
         if (databaseName != 'Instacart') {
             this.databaseName = 'dev';
         }
-        if (databaseName !== 'ABCRetail') {
+        if (databaseName !== 'ABCRetail_N') {
             this.databaseName = 'instacart';
         }
         console.log(this.databaseName);
