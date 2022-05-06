@@ -56,16 +56,19 @@ class RedShiftHandler {
     databaseName = "";
     constructor(name, databaseName) {
         this.name = name;
-        this.databaseName = databaseName == 'Instacart' ? 'dev' : 'abc_retail';
+        this.databaseName = databaseName == 'Instacart' ? 'instacart' : 'dev';
     }
     async executeQuery(query, databaseName) {
         if (databaseName === undefined) { 
             alert("Database name is not defined");
         }
         if (databaseName != 'Instacart') {
-            this.databaseName = 'abc_retail';
+            this.databaseName = 'dev';
         }
-        
+        if (databaseName !== 'ABCRetail') {
+            this.databaseName = 'instacart';
+        }
+        console.log(this.databaseName);
         try{
             //https://polar-forest-84901.herokuapp.com
             const response = await fetch('https://polar-forest-84901.herokuapp.com/redshift', {

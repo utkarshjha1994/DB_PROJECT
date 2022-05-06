@@ -35,7 +35,7 @@ export default class CustomRadioButton extends Component {
     const handlerType = this.state.radioButton;
     const databaseName = this.state.database;
     let result = null;
-    console.log(databaseName)
+    
     if (!handlerType || !databaseName) {
       alert("Please select a handler and database");
       return result;
@@ -46,9 +46,10 @@ export default class CustomRadioButton extends Component {
     if (!this.dbInstance) {
       this.dbInstance = getDbInstance(handlerType, databaseName);
     }
-    console.log(this.dbInstance);
+    console.log(this.state.database);
     console.log(this.state.radioButton);
     try{
+      console.log(this.state.database)
       result = await this.dbInstance.executeQuery(this.state.query, this.state.database);
     }
     catch(err){
